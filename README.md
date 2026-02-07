@@ -11,12 +11,12 @@ which is all we want for a proof of concept. No need to start Hive MetaStore or 
 AWS Glue's Data Catalog and make network connections.
 
 Once we have an Iceberg Catalog, 
-[create_local_iceberg_table.py](blob/main/create_local_iceberg_table.py)
+[create_local_iceberg_table.py](https://github.com/TerryOtt/simple-iceberg-table-create-readback/blob/main/create_local_iceberg_table.py)
 creats an Iceberg table and writes a three-row Polars DataFrame to it.
 
 Going the other direction, 
-[query_local_iceberg_table.py](blob/main/query_local_icevberg_table.py) read data from
-the Iceberg table into a Polars DataFrame.
+[query_local_iceberg_table.py](https://github.com/TerryOtt/simple-iceberg-table-create-readback/blob/main/query_local_iceberg_table.py) 
+reads data from the Iceberg table into a Polars DataFrame.
 
 
 ## Create An Iceberg Table
