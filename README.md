@@ -9,7 +9,9 @@ This demo uses [Boring Catalog](https://github.com/boringdata/boring-catalog) fo
 [Iceberg Catalog](https://medium.com/itversity/iceberg-catalogs-a-guide-for-data-engineers-a6190c7bf381).
 Boring Catalog is dead-simple, consisting of a single JSON file for all its state. Full stop.
 As we are aiming for _simple_, Boring Catalog is all that's needed. No need to launch other software 
-like Hive MetaStore or create a hosted Iceberg catalog using a cloud provider, as with AWS Glue.
+like Hive Metastore backed by MySQL/PostgreSQL or use a cloud provider's managed Iceberg catalog service 
+such as 
+[AWS Glue Data Catalog](https://docs.aws.amazon.com/prescriptive-guidance/latest/apache-iceberg-on-aws/iceberg-pyiceberg.html).
 
 [create_local_iceberg_table.py](https://github.com/TerryOtt/simple-iceberg-table-create-readback/blob/main/create_local_iceberg_table.py)
 creates an Iceberg table using Boring and writes a trivial Polars DataFrame (three rows) to it.
