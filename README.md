@@ -23,3 +23,22 @@ $
 ```
 
 ## Query Data From An Iceberg Table
+
+```
+$ uv run query_local_iceberg_table.py
+
+Full table data out of Iceberg:
+shape: (3, 3)
+┌───────┬────────┬───────┐
+│ Fruit ┆ Color  ┆ Count │
+│ ---   ┆ ---    ┆ ---   │
+│ str   ┆ str    ┆ i64   │
+╞═══════╪════════╪═══════╡
+│ Apple ┆ Red    ┆ 2     │
+│ Apple ┆ Yellow ┆ 1     │
+│ Pear  ┆ Green  ┆ 1     │
+└───────┴────────┴───────┘
+
+$
+```
+
