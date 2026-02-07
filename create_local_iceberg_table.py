@@ -48,7 +48,7 @@ def _main() -> None:
     #       using our catalog handle so ACID guarantees are protected
     polars_df.write_iceberg(new_iceberg_table, mode='append')
 
-    # data created with parquet file of data
+    # data created (Parquet format)
 
     # Metadata updated with
     #   current table metadata version
@@ -56,8 +56,9 @@ def _main() -> None:
     #   
     #   By having metadata with a per-catalog GUID, it allows multiple catalogs to work safely on the same table...
     #       ...if you're crazy enough to allow that
-    #
         
+    print("Apache Iceberg table created in ./iceberg_table")
+
 
 if __name__ == "__main__":
     _main()
