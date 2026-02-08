@@ -1,16 +1,16 @@
-import json
-import os
+import boringcatalog
+import shutil
+import pathlib
 import polars
-import pyiceberg.catalog
-import pyiceberg.table
 
 
+data_dir = "./data/"
 aws_region: str = "us-east-2"
 iceberg_namespace: str = "dataset_xyz_namespace"
 catalog_name: str = "aws_catalog"
+catalog_json: str = f"./data/catalogs/catalog_{catalog_name}.json"
 iceberg_table_name: str = "dataset_xyz_table"
-#s3_bucket_path: str = f"s3://{iceberg_table_name}"
-table_s3_bucket_name: str = "firsttracks-net-iceberg-demo"
+table_s3_bucket_name: str = "iceberg-demo.firsttracks.net"
 
 def _main() -> None:
     
@@ -24,53 +24,41 @@ def _main() -> None:
 
     print(f"\n{polars_df}")
 
-    iceberg_catalog: pyiceberg.catalog.Catalog = pyiceberg.catalog.load_catalog(
-        catalog_name,
+    # Remove data dir if it exists
+    datapath: pathlib.Path = pathlib.Path(data_dir)
+    if datapath.exists() and datapath.is_dir():
+        shutil.rmtree(datapath)
+
+    iceberg_catalog: boringcatalog.BoringCatalog = boringcatalog.BoringCatalog(
+        name        = catalog_name,
         **{
-            "type"                  : "rest",
-            "uri"                   : f"https://glue.{aws_region}.amazonaws.com/iceberg",
-            "rest.sigv4-enabled"    : "true",
-            "rest.signing-name"     : "glue",
-            "rest.signing-region"   : aws_region,
-            "glue.region"           : aws_region,
-            # "warehouse"             : f"{os.environ.get('AWS_ACCOUNT_ID')}",
-            # "s3.region"             : aws_region,
+            "uri"       : catalog_json,
+            "warehouse" : f"s3://{table_s3_bucket_name}",
+            "s3.region" : aws_region,
         }
     )
 
-    # Before we create our namespace, do any exist?
-    print("\nCatalog namespaces (aka, \"AWS Glue Data Catalog Databases\"):\n"
-          f"{json.dumps(iceberg_catalog.list_namespaces()[0], indent=4, sort_keys=True)}")
-
     # Create namespace -- this is a catalog ONLY operation,
+    #   nothing is created in warehouse dir
     iceberg_catalog.create_namespace_if_not_exists(iceberg_namespace)
 
-    print("\nCatalog namespaces (aka, \"AWS Glue Data Catalog Databases\"):\n"
-          f"{json.dumps(iceberg_catalog.list_namespaces()[0], indent=4, sort_keys=True)}")
+    new_iceberg_table: pyiceberg.table.Table = iceberg_catalog.create_table(
+        f"{iceberg_namespace}.{iceberg_table_name}",
+        schema=polars_df.to_arrow().schema
+    )
 
-    # Create table with required namespace identifier
-    # new_iceberg_table: pyiceberg.table.Table = iceberg_catalog.create_table(
-    #     f"{iceberg_namespace}.{iceberg_table_name}",
-    #     schema=polars_df.to_arrow().schema
-    # )
+    polars_df.write_iceberg(new_iceberg_table, mode='append')
 
-    #
-    # # Now write the contents of our Polars dataframe to our Iceberg table,
-    # #       using our catalog handle so ACID guarantees are protected
-    # polars_df.write_iceberg(new_iceberg_table, mode='append')
-    #
-    # # data created (Parquet format)
-    #
-    # # Metadata updated with
-    # #   current table metadata version
-    # #   previous table metadata version
-    #
-    # print( "\n"
-    #        "*********************************************************\n"
-    #       f"BoringTable catalog  : {catalog_json}\n"
-    #       f"Apache Iceberg table : {iceberg_dir}\n"
-    #        "*********************************************************\n"
-    #        "\n" )
+    print( "\n"
+           "*********************************************************\n"
+          f"BoringTable catalog  : {catalog_json}\n"
+          f"Apache Iceberg table : s3://{table_s3_bucket_name}/{iceberg_namespace}/{iceberg_table_name}\n"
+           "*********************************************************\n"
+           "\n" )
+
+
+
+
 
 
 if __name__ == "__main__":
