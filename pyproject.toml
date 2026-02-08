@@ -6,5 +6,5 @@ readme = "README.md"
 requires-python = ">=3.12"
 dependencies = [
     "boringcatalog>=0.4.0",
-    "pyiceberg[polars,s3,s3fs]>=0.10.0",
+    "pyiceberg[glue,polars,rest,s3,s3fs]>=0.10.0",
 ]

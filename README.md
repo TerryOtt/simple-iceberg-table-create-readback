@@ -16,7 +16,17 @@ such as
 [AWS Glue Data Catalog](https://docs.aws.amazon.com/prescriptive-guidance/latest/apache-iceberg-on-aws/iceberg-pyiceberg.html).
 
 
-## AWS IAM Permissions
+## AWS
+
+### Glue Data Catalog
+
+In the console, create a new Database (under Data Catalog) called 
+
+### S3 Bucket
+
+Create an S3 bucket and note the ARN.
+
+### IAM Permissions
 
 Using AWS Glue for the Iceberg Catalog and S3 for the Iceberg Table requires the following permissions:
 
@@ -25,6 +35,7 @@ Using AWS Glue for the Iceberg Catalog and S3 for the Iceberg Table requires the
     * `glue:CreateTable`
     * `glue:DeleteDatabase`
     * `glue:DeleteTable`
+    * `glue:GetCatalog`
     * `glue:GetDatabase`
     * `glue:GetDatabases`
     * `glue:GetTable`
