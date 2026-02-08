@@ -2,8 +2,10 @@
 
 ## Summary 
 
-Simplest way I could think to show how to create, read, and write data to.from
-an Apache Iceberg table in Python.
+Demonstrating how to create, read, and write data to/from Apache Iceberg tables in Python.
+
+
+## Iceberg Catalog
 
 This demo uses [Boring Catalog](https://github.com/boringdata/boring-catalog) for its 
 [Iceberg Catalog](https://medium.com/itversity/iceberg-catalogs-a-guide-for-data-engineers-a6190c7bf381).
@@ -13,15 +15,10 @@ like Hive Metastore backed by MySQL/PostgreSQL or use a cloud provider's managed
 such as 
 [AWS Glue Data Catalog](https://docs.aws.amazon.com/prescriptive-guidance/latest/apache-iceberg-on-aws/iceberg-pyiceberg.html).
 
-[create_local_iceberg_table.py](https://github.com/TerryOtt/simple-iceberg-table-create-readback/blob/main/create_local_iceberg_table.py)
-creates an Iceberg table using Boring and writes a trivial Polars DataFrame (three rows) to it.
 
-Going the other direction, 
-[query_local_iceberg_table.py](https://github.com/TerryOtt/simple-iceberg-table-create-readback/blob/main/query_local_iceberg_table.py) 
-uses Boring and Polars to query data from the Iceberg table into a Polars DataFrame.
+## Usage
 
-
-## Create An Iceberg Table
+_Note_: instructions assume `uv` is already installed in your environment.
 
 ```
 $ uv run create_local_iceberg_table.py
