@@ -7,10 +7,11 @@ import polars
 data_dir = "./data/"
 aws_region: str = "us-east-2"
 iceberg_namespace: str = "dataset_xyz_namespace"
-catalog_name: str = "aws_catalog"
+catalog_name: str = "aws_cat"
 catalog_json: str = f"./data/catalogs/catalog_{catalog_name}.json"
 iceberg_table_name: str = "dataset_xyz_table"
 table_s3_bucket_name: str = "iceberg-demo.firsttracks.net"
+
 
 def _main() -> None:
     
@@ -52,7 +53,8 @@ def _main() -> None:
     print( "\n"
            "*********************************************************\n"
           f"BoringTable catalog  : {catalog_json}\n"
-          f"Apache Iceberg table : s3://{table_s3_bucket_name}/{iceberg_namespace}/{iceberg_table_name}\n"
+          f"Apache Iceberg table : s3://{table_s3_bucket_name}/{iceberg_namespace}\n"
+          f"Dataset table        : s3://{table_s3_bucket_name}/{iceberg_namespace}/{iceberg_table_name}\n"
            "*********************************************************\n"
            "\n" )
 
