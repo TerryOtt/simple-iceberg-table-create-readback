@@ -1,13 +1,24 @@
 import boringcatalog
+import pathlib
 import polars
 import pyiceberg.table
 
 
+data_dir: str = "./data"
+catalog_name: str = "local"
+catalog_json: str = f"{data_dir}/catalogs/catalog_{catalog_name}.json"
+iceberg_dir: str = f"{data_dir}/iceberg_table"
+
+
 def _main() -> None:
-    
+    datapath: pathlib.Path = pathlib.Path(data_dir)
+    if not datapath.exists() or not datapath.is_dir():
+        raise RuntimeError("Need to run local_create before this script")
+
     iceberg_catalog: boringcatalog.BoringCatalog = boringcatalog.BoringCatalog(
-        name="myicebergcatalog", 
-        warehouse="./iceberg_table"
+        name        = catalog_name,
+        warehouse   = iceberg_dir,
+        uri         = catalog_json,
     )
 
     # Get iceberg table handle from catalog

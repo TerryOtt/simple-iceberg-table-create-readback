@@ -1,12 +1,14 @@
 import boringcatalog
+import shutil
+import pathlib
 import polars
 import pyiceberg.table
 
 
-catalog_name: str = "local"
 data_dir: str = "./data"
-iceberg_dir: str = f"{data_dir}/iceberg_table"
+catalog_name: str = "local"
 catalog_json: str = f"{data_dir}/catalogs/catalog_{catalog_name}.json"
+iceberg_dir: str = f"{data_dir}/iceberg_table"
 
 
 def _main() -> None:
@@ -20,6 +22,11 @@ def _main() -> None:
     polars_df: polars.DataFrame = polars.DataFrame(data)
 
     print(f"\n{polars_df}")
+
+    # Remove data dir if it exists
+    datapath: pathlib.Path = pathlib.Path(data_dir)
+    if datapath.exists() and datapath.is_dir():
+        shutil.rmtree(datapath)
 
     iceberg_catalog: boringcatalog.BoringCatalog = boringcatalog.BoringCatalog(
         name        = catalog_name,
@@ -61,12 +68,12 @@ def _main() -> None:
     #   current table metadata version
     #   previous table metadata version
 
-    print("\n"
-           "*******************************************************************\n"
+    print( "\n"
+           "*********************************************************\n"
           f"BoringTable catalog  : {catalog_json}\n"
           f"Apache Iceberg table : {iceberg_dir}\n"
-          "********************************************************************\n"
-          "\n" )
+           "*********************************************************\n"
+           "\n" )
 
 
 if __name__ == "__main__":
