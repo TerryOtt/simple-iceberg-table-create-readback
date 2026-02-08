@@ -33,10 +33,14 @@ def _main() -> None:
             "rest.signing-name"     : "glue",
             "rest.signing-region"   : aws_region,
             "glue.region"           : aws_region,
-            "warehouse"             : f"{os.environ.get('AWS_ACCOUNT_ID')}:s3tablescatalog/{table_s3_bucket_name}",
-            "s3.region"             : aws_region,
+            # "warehouse"             : f"{os.environ.get('AWS_ACCOUNT_ID')}",
+            # "s3.region"             : aws_region,
         }
     )
+
+    # Before we create our namespace, do any exist?
+    print("\nCatalog namespaces (aka, \"AWS Glue Data Catalog Databases\"):\n"
+          f"{json.dumps(iceberg_catalog.list_namespaces()[0], indent=4, sort_keys=True)}")
 
     # Create namespace -- this is a catalog ONLY operation,
     iceberg_catalog.create_namespace_if_not_exists(iceberg_namespace)
